@@ -1,0 +1,39 @@
+name: Build Android APK
+
+# Ye workflow GitHub ke cloud server par chalta hai — tumhare computer par
+# kuch bhi install karne ki zaroorat nahi. Har baar jab tum "main" branch par
+# code push karoge, ye khud-ba-khud APK bana kar "Artifacts" me rakh dega.
+# Manually bhi chala sakte ho: repo ke "Actions" tab me jaake "Run workflow".
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v4
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+          channel: 'stable'
+
+      - name: Generate android/ios platform folders
+        run: flutter create . --platforms=android
+
+      - name: Install packages
+        run: flutter pub get
+
+      - name: Build release APK
+        run: flutter build apk --release
+
+      - name: Upload APK so you can download it
+        uses: actions/upload-artifact@v4
+        with:
+          name: foodiehub-release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
