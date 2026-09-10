@@ -7,6 +7,6 @@
 // set baseUrl to 'https://mystore.com/foodapp'
 // ============================================
 class AppConfig {
-  static const String baseUrl = 'https://YOUR-DOMAIN.com/foodapp';
+  static const String baseUrl = 'https://pakhanjurone.in/';
   static String get apiUrl => '$baseUrl/api';
 }
